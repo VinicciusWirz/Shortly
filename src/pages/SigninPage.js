@@ -1,17 +1,64 @@
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import SessionContext from "../contexts/SessionContext";
+import apiAuth from "../services/apiAuth";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SigninPage() {
-  function handleForm(e) {
+  const { token, setToken } = useContext(SessionContext);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
+  async function handleForm(e) {
     e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await apiAuth.signin(form);
+      setToken(data);
+      const localData = JSON.stringify(data);
+      localStorage.setItem("session", localData);
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      alert(`${error.response.status}: ${error.response.data}`);
+      setLoading(false);
+    }
   }
+
   return (
     <SigninStyle>
       <form onSubmit={handleForm}>
         <InputWrapper>
-          <input placeholder="E-mail" />
-          <input placeholder="Senha" />
+          <input
+            placeholder="E-mail"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            value={form.email}
+            type="email"
+            disabled={loading}
+            autoComplete="email"
+          />
+          <input
+            placeholder="Senha"
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            value={form.password}
+            type="password"
+            disabled={loading}
+            autoComplete="password"
+          />
         </InputWrapper>
-        <button type="submit">Entrar</button>
+        <button type="submit" disabled={loading}>
+          {loading ? <ThreeDots height={18} /> : "Entrar"}
+        </button>
       </form>
     </SigninStyle>
   );
@@ -43,6 +90,9 @@ const SigninStyle = styled.div`
       &:focus {
         outline-color: rgba(0, 155, 0, 0.1);
       }
+      &:disabled {
+        background: #dddd;
+      }
     }
     button {
       background: #5d9040;
@@ -55,6 +105,9 @@ const SigninStyle = styled.div`
       border: none;
       padding: 21px 50px;
       cursor: pointer;
+      &:disabled {
+        background: #617a55;
+      }
     }
   }
 `;

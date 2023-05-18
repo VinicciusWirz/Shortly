@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import SessionContext from "../contexts/SessionContext";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import apiAuth from "../services/apiAuth";
 import { ThreeDots } from "react-loader-spinner";
 
 export default function SignupPage() {
-  const { token } = SessionContext;
+  const { token } = useContext(SessionContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
