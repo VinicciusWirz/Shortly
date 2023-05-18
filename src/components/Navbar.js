@@ -1,11 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   return (
     <NavStyle>
       <Options>
-        <div>Entrar</div>
-        <div>Cadastrar-se</div>
+        <div onClick={() => navigate("/signin")}>Entrar</div>
+        <div onClick={() => navigate("/signup")}>Cadastrar-se</div>
       </Options>
     </NavStyle>
   );

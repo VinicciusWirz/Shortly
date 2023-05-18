@@ -5,21 +5,27 @@ import RankPage from "./pages/RankPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import UserLinksPage from "./pages/UserLinksPage";
+import SessionContext, { SessionProvider } from "./contexts/SessionContext";
 
 function App() {
-  const logged = true;
+  const { token } = SessionContext;
   return (
     <PageContainer>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={logged ? <UserLinksPage /> : <RankPage />} />
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/my-links" element={<UserLinksPage />} />
-          <Route path="/ranking" element={<RankPage />} />
-        </Routes>
-      </BrowserRouter>
+      <SessionProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route
+              path="/"
+              element={token ? <UserLinksPage /> : <RankPage />}
+            />
+            <Route path="/signin" element={<SigninPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/my-links" element={<UserLinksPage />} />
+            <Route path="/ranking" element={<RankPage />} />
+          </Routes>
+        </BrowserRouter>
+      </SessionProvider>
     </PageContainer>
   );
 }
