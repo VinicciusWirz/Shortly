@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { styled } from "styled-components";
+import Header from "./components/Header";
+import RankPage from "./pages/RankPage";
+import SigninPage from "./pages/SigninPage";
+import SignupPage from "./pages/SignupPage";
+import UserLinksPage from "./pages/UserLinksPage";
 
 function App() {
+  const logged = true;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PageContainer>
+      <Header />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={logged ? <UserLinksPage /> : <RankPage />} />
+          <Route path="/signin" element={<SigninPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/my-links" element={<UserLinksPage />} />
+          <Route path="/ranking" element={<RankPage />} />
+        </Routes>
+      </BrowserRouter>
+    </PageContainer>
   );
 }
+
+const PageContainer = styled.main`
+  width: 86vw;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  background: #ffff;
+`;
 
 export default App;
