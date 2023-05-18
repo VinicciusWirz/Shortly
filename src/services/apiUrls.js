@@ -8,5 +8,10 @@ function createShort(body, token) {
   return axios.post(`${url}/shorten`, body, config);
 }
 
-const apiUrls = { createShort };
+function deleteShort(id, token) {
+  const config = headerGen(token);
+  return axios.delete(`${url}/${id}`, config);
+}
+
+const apiUrls = { createShort, deleteShort };
 export default apiUrls;

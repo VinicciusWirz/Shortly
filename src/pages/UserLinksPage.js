@@ -9,7 +9,7 @@ import apiUrls from "../services/apiUrls";
 export default function UserLinksPage() {
   const { token, setToken } = useContext(SessionContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [shorts, setShorts] = useState([]);
   const [form, setForm] = useState({ url: "" });
 
@@ -50,12 +50,25 @@ export default function UserLinksPage() {
       setForm({ url: "" });
       setLoading(false);
     } catch (error) {
-      console.log(error);
       alert(`${error.response.status}: ${error.response.data}`);
       setLoading(false);
     }
   }
-  function deleteLink(id) {}
+
+  async function deleteLink(id) {
+    setLoading(true);
+    try {
+      await apiUrls.deleteShort(id, token.token);
+      const filteredShorts = shorts.filter((s) => s.id !== id);
+      console.log("id clicado", id);
+      console.log("array filtrada", filteredShorts);
+      setShorts(filteredShorts);
+      setLoading(false);
+    } catch (error) {
+      alert(`${error.response.status}: ${error.response.data}`);
+      setLoading(false);
+    }
+  }
   return (
     <UserLinksStyle>
       <Container>
@@ -71,11 +84,11 @@ export default function UserLinksPage() {
         </form>
         <LinkList>
           {shorts.map((l) => (
-            <li>
+            <li key={l.shortUrl}>
               <div>{l.url}</div>
               <div>{l.shortUrl}</div>
               <div>Quantidade de visitantes: {l.visitCount}</div>
-              <DeleteButton onClick={() => deleteLink(l.id)}>
+              <DeleteButton onClick={() => deleteLink(l.id)} disabled={loading}>
                 <FaTrashAlt size={22} />
               </DeleteButton>
             </li>
@@ -160,13 +173,15 @@ const LinkList = styled.ul`
   }
 `;
 
-const DeleteButton = styled.div`
+const DeleteButton = styled.button`
   width: 13%;
   height: 100%;
   background: #ffff;
+  padding: 21px;
   border-radius: 0px 12px 12px 0px;
   color: #ea4f4f;
   display: flex;
   justify-content: center;
   cursor: pointer;
+  border: none;
 `;
