@@ -1,7 +1,33 @@
 import { styled } from "styled-components";
 import { AiFillTrophy } from "react-icons/ai";
+import { useContext, useState } from "react";
+import SessionContext from "../contexts/SessionContext";
+import apiUsers from "../services/apiUsers";
+import { useNavigate } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function RankPage() {
+  const { token } = useContext(SessionContext);
+  const [ranking, setRanking] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useState(() => {
+    fetchRank();
+  }, []);
+
+  async function fetchRank() {
+    setLoading(true);
+    try {
+      const { data } = await apiUsers.ranks();
+      setRanking(data);
+      setLoading(false);
+    } catch (error) {
+      alert(`${error.response.status}: ${error.response.data}`);
+      setLoading(false);
+    }
+  }
+
   return (
     <RanksStyle>
       <Container>
@@ -10,26 +36,25 @@ export default function RankPage() {
           Ranking
         </Title>
         <Frame>
-          <RankItem order={0}>
-            1. Fulaninha - 32 links - 1.703.584 visualizações
-          </RankItem>
-          <RankItem order={1}>
-            2. Ciclano - 20 links - 1.113.347 visualizações
-          </RankItem>
-          <RankItem order={2}>
-            3. Beltrana - 18 links - 852.961 visualizações
-          </RankItem>
-          <RankItem order={3}>
-            4. Joaozin - 14 links - 492.173 visualizações
-          </RankItem>
-          <RankItem order={4}>
-            5. DEFINITIVAMENTE_NAO_E_UM_BOT - 12345252 links - 37.707
-            visualizações
-          </RankItem>
+          {loading && (
+            <ListLoading>
+              <ThreeDots />
+            </ListLoading>
+          )}
+          {ranking.map((user, index) => (
+            <RankItem order={index} key={index}>
+              {index + 1}. {user.name} - {user.linksCount} links -{" "}
+              {user.visitCount} visualizações
+            </RankItem>
+          ))}
         </Frame>
-        <Signup>
-          <div>Crie sua conta para usar nosso serviço!</div>
-        </Signup>
+        {!token && (
+          <Signup>
+            <div onClick={() => navigate("/signup")}>
+              Crie sua conta para usar nosso serviço!
+            </div>
+          </Signup>
+        )}
       </Container>
     </RanksStyle>
   );
@@ -85,4 +110,9 @@ const Signup = styled.div`
   div {
     cursor: pointer;
   }
+`;
+const ListLoading = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

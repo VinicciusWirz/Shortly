@@ -18,7 +18,6 @@ function App() {
           <Route path="/" element={token ? <UserLinksPage /> : <RankPage />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/my-links" element={<UserLinksPage />} />
           <Route path="/ranking" element={<RankPage />} />
         </Routes>
       </BrowserRouter>

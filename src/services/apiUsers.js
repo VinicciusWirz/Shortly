@@ -9,7 +9,7 @@ function userLinks(token) {
 }
 
 function ranks() {
-  return axios.get(`${url}/`);
+  return axios.get(`${url}/ranking`);
 }
 
 const apiUsers = { userLinks, ranks };
