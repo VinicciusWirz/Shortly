@@ -1,14 +1,32 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import SessionContext from "../contexts/SessionContext";
 
 export default function Navbar() {
+  const { token } = useContext(SessionContext);
   const navigate = useNavigate();
+  function logout() {
+    localStorage.clear();
+    window.location.reload();
+  }
   return (
     <NavStyle>
-      <Options>
-        <div onClick={() => navigate("/signin")}>Entrar</div>
-        <div onClick={() => navigate("/signup")}>Cadastrar-se</div>
-      </Options>
+      {token ? (
+        <>
+          <Options>
+            <div onClick={() => navigate("/")}>Home</div>
+            <div onClick={() => navigate("/ranking")}>Ranking</div>
+            <div onClick={logout}>Sair</div>
+          </Options>
+          <Title color="#5d9040">Seja bem-vindo(a) {token.name}!</Title>
+        </>
+      ) : (
+        <Options color="#5d9040">
+          <div onClick={() => navigate("/signin")}>Entrar</div>
+          <div onClick={() => navigate("/signup")}>Cadastrar-se</div>
+        </Options>
+      )}
     </NavStyle>
   );
 }
@@ -28,9 +46,13 @@ const Options = styled.div`
   line-height: 18px;
   color: #9c9c9c;
   :first-child {
-    color: #5d9040;
+    color: ${(props) => (props.color ? props.color : "#9c9c9c")};
+    /* color: #5d9040; */
   }
   div {
     cursor: pointer;
   }
+`;
+const Title = styled.div`
+  color: #5d9040;
 `;

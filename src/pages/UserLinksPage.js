@@ -1,44 +1,85 @@
 import { styled } from "styled-components";
 import { FaTrashAlt } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import apiUsers from "../services/apiUsers";
+import { useNavigate } from "react-router-dom";
+import SessionContext from "../contexts/SessionContext";
+import apiUrls from "../services/apiUrls";
 
 export default function UserLinksPage() {
-  function handleForm(e) {
-    e.preventDefault();
+  const { token, setToken } = useContext(SessionContext);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [shorts, setShorts] = useState([]);
+  const [form, setForm] = useState({ url: "" });
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+    fetchList();
+  }, []);
+
+  async function fetchList() {
+    setLoading(true);
+    try {
+      const info = await apiUsers.userLinks(token.token);
+      if (!token.name) {
+        const userData = { ...token, name: info.data.name };
+        const localData = JSON.stringify(userData);
+        localStorage.setItem("session", localData);
+        setToken(userData);
+      }
+      setShorts(info.data.shortenedUrls);
+      setLoading(false);
+    } catch (error) {
+      alert(`${error.response.status}: ${error.response.data}`);
+      setLoading(false);
+    }
   }
+
+  async function handleForm(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { data } = await apiUrls.createShort(form, token.token);
+      setShorts([
+        ...shorts,
+        { url: form.url, shortUrl: data.shortUrl, id: data.id, visitCount: 0 },
+      ]);
+      setForm({ url: "" });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      alert(`${error.response.status}: ${error.response.data}`);
+      setLoading(false);
+    }
+  }
+  function deleteLink(id) {}
   return (
     <UserLinksStyle>
       <Container>
         <form onSubmit={handleForm}>
-          <input placeholder="Links que cabem no bolso" />
-          <button type="submit">
+          <input
+            placeholder="Links que cabem no bolso"
+            onChange={(e) => setForm({ url: e.target.value })}
+            value={form.url}
+          />
+          <button type="submit" disabled={loading}>
             <p>Encurtar link</p>
           </button>
         </form>
         <LinkList>
-          <li>
-            <div>https://www.driven.com.br</div>
-            <div>e4231A</div>
-            <div>Quantidade de visitantes: 271</div>
-            <DeleteButton>
-              <FaTrashAlt size={22} />
-            </DeleteButton>
-          </li>
-          <li>
-            <div>https://www.driven.com.br</div>
-            <div>e4231A</div>
-            <div>Quantidade de visitantes: 271</div>
-            <DeleteButton>
-              <FaTrashAlt size={22} />
-            </DeleteButton>
-          </li>
-          <li>
-            <div>https://www.driven.com.br</div>
-            <div>e4231A</div>
-            <div>Quantidade de visitantes: 271</div>
-            <DeleteButton>
-              <FaTrashAlt size={22} />
-            </DeleteButton>
-          </li>
+          {shorts.map((l) => (
+            <li>
+              <div>{l.url}</div>
+              <div>{l.shortUrl}</div>
+              <div>Quantidade de visitantes: {l.visitCount}</div>
+              <DeleteButton onClick={() => deleteLink(l.id)}>
+                <FaTrashAlt size={22} />
+              </DeleteButton>
+            </li>
+          ))}
         </LinkList>
       </Container>
     </UserLinksStyle>
