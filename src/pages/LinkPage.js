@@ -102,7 +102,7 @@ export default function LinkPage() {
             </Icons>
 
             <button
-              onClick={() => navigate(`/r/:${linkInfo?.shortUrl}`)}
+              onClick={() => navigate(`/r/${linkInfo?.shortUrl}`)}
               disabled={!linkInfo || loading}
             >
               Ir para o link
