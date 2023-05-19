@@ -33,17 +33,21 @@ export default function LinkPage() {
     toast("Link copiado");
   }
   async function deleteLink(id) {
-    setLoading(true);
-    try {
-      await apiUrls.deleteShort(id, token.token);
-      toast("Link deletado");
-      setTimeout(() => {
+    if (token) {
+      setLoading(true);
+      try {
+        await apiUrls.deleteShort(id, token.token);
+        toast("Link deletado");
+        setTimeout(() => {
+          setLoading(false);
+          navigate(-1);
+        }, 1500);
+      } catch (error) {
+        alert(`${error.response.status}: ${error.response.data}`);
         setLoading(false);
-        navigate(-1);
-      }, 1500);
-    } catch (error) {
-      alert(`${error.response.status}: ${error.response.data}`);
-      setLoading(false);
+      }
+    } else {
+      toast("Você não está logado");
     }
   }
 
