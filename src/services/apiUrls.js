@@ -13,5 +13,9 @@ function deleteShort(id, token) {
   return axios.delete(`${url}/${id}`, config);
 }
 
-const apiUrls = { createShort, deleteShort };
+function redirectShort(shortUrl) {
+  return axios.get(`${url}/open/${shortUrl}`);
+}
+
+const apiUrls = { createShort, deleteShort, redirectShort };
 export default apiUrls;

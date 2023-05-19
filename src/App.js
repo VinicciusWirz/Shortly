@@ -7,6 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import UserLinksPage from "./pages/UserLinksPage";
 import SessionContext, { SessionProvider } from "./contexts/SessionContext";
 import { useContext, useEffect } from "react";
+import Redirect from "./pages/Redirect";
 
 function App() {
   const { token } = useContext(SessionContext);
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/ranking" element={<RankPage />} />
+          <Route path="/r/:shortUrl" element={<Redirect />} />
         </Routes>
       </BrowserRouter>
     </PageContainer>
