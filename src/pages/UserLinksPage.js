@@ -88,6 +88,7 @@ export default function UserLinksPage() {
         <LinkList>
           {shorts.map((l) => (
             <UserLinks
+              key={l.shortUrl}
               item={l}
               copyToClipboard={copyToClipboard}
               loading={loading}
@@ -154,7 +155,7 @@ const LinkList = styled.ul`
   display: flex;
   flex-direction: column;
 
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 
   li {
     border: 1px solid rgba(120, 177, 89, 0.25);

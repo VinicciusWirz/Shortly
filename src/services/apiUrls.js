@@ -17,5 +17,9 @@ function redirectShort(shortUrl) {
   return axios.get(`${url}/open/${shortUrl}`);
 }
 
-const apiUrls = { createShort, deleteShort, redirectShort };
+function getLinkInfo(id) {
+  return axios.get(`${url}/${id}`);
+}
+
+const apiUrls = { createShort, deleteShort, redirectShort, getLinkInfo };
 export default apiUrls;
