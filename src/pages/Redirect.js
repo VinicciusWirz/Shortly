@@ -17,7 +17,6 @@ export default function Redirect() {
       .catch((error) => {
         alert("Ocorreu um erro");
         console.log(error);
-        navigate("/");
       });
   }, []);
   return (
