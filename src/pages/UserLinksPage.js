@@ -1,10 +1,12 @@
 import { styled } from "styled-components";
-import { FaTrashAlt } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import apiUsers from "../services/apiUsers";
 import { useNavigate } from "react-router-dom";
 import SessionContext from "../contexts/SessionContext";
 import apiUrls from "../services/apiUrls";
+import UserLinks from "../components/UserLinks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function UserLinksPage() {
   const { token, setToken } = useContext(SessionContext);
@@ -54,23 +56,24 @@ export default function UserLinksPage() {
       setLoading(false);
     }
   }
-
-  async function deleteLink(id) {
-    setLoading(true);
-    try {
-      await apiUrls.deleteShort(id, token.token);
-      const filteredShorts = shorts.filter((s) => s.id !== id);
-      console.log("id clicado", id);
-      console.log("array filtrada", filteredShorts);
-      setShorts(filteredShorts);
-      setLoading(false);
-    } catch (error) {
-      alert(`${error.response.status}: ${error.response.data}`);
-      setLoading(false);
-    }
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+    toast("Link copiado");
   }
   return (
     <UserLinksStyle>
+      <ToastContainer
+        position="top-left"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Container>
         <form onSubmit={handleForm}>
           <input
@@ -84,14 +87,14 @@ export default function UserLinksPage() {
         </form>
         <LinkList>
           {shorts.map((l) => (
-            <li key={l.shortUrl}>
-              <div>{l.url}</div>
-              <div>{l.shortUrl}</div>
-              <div>Quantidade de visitantes: {l.visitCount}</div>
-              <DeleteButton onClick={() => deleteLink(l.id)} disabled={loading}>
-                <FaTrashAlt size={22} />
-              </DeleteButton>
-            </li>
+            <UserLinks
+              item={l}
+              copyToClipboard={copyToClipboard}
+              loading={loading}
+              setLoading={setLoading}
+              shorts={shorts}
+              setShorts={setShorts}
+            />
           ))}
         </LinkList>
       </Container>
@@ -150,6 +153,11 @@ const LinkList = styled.ul`
   gap: 42px;
   display: flex;
   flex-direction: column;
+
+  > :last-child {
+    margin-bottom: 40px;
+  }
+
   li {
     border: 1px solid rgba(120, 177, 89, 0.25);
     width: 100%;
@@ -167,21 +175,32 @@ const LinkList = styled.ul`
     flex: none;
     order: 1;
     flex-grow: 0;
-    div {
+
+    > div {
       padding: 21px;
+      width: 22%;
+      max-width: 22%;
+      cursor: default;
+    }
+
+    > div:first-child,
+    > div:nth-child(2) {
+      cursor: pointer;
+    }
+
+    > div:nth-child(2) {
+      display: flex;
+      justify-content: center;
+    }
+
+    > div:first-child {
+      width: 30%;
+      max-width: 30%;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
-`;
-
-const DeleteButton = styled.button`
-  width: 13%;
-  height: 100%;
-  background: #ffff;
-  padding: 21px;
-  border-radius: 0px 12px 12px 0px;
-  color: #ea4f4f;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-  border: none;
 `;
