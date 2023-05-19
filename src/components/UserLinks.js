@@ -1,15 +1,17 @@
 import { FaTrashAlt } from "react-icons/fa";
+import { BsClipboard2Fill } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { styled } from "styled-components";
 import apiUrls from "../services/apiUrls";
 import { useContext } from "react";
 import SessionContext from "../contexts/SessionContext";
-
+import { useNavigate } from "react-router-dom";
 
 export default function UserLinks(props) {
   const { shortUrl, url, id, visitCount } = props.item;
   const { token } = useContext(SessionContext);
   const redirectLink = `${window.location.href}r/${shortUrl}`;
+  const navigate = useNavigate();
 
   async function deleteLink(id) {
     props.setLoading(true);
@@ -30,7 +32,7 @@ export default function UserLinks(props) {
         <div
           data-tooltip-id="my-tooltip"
           data-tooltip-content={url}
-          onClick={() => props.copyToClipboard(url)}
+          onClick={() => navigate(`/url/${id}`)}
         >
           <p>{url}</p>
           <Tooltip id="my-tooltip" />
@@ -40,6 +42,7 @@ export default function UserLinks(props) {
           data-tooltip-content={redirectLink}
           onClick={() => props.copyToClipboard(redirectLink)}
         >
+          <BsClipboard2Fill style={{ fontSize: "20px", marginRight: "5px" }} />
           <p>{shortUrl}</p>
           <Tooltip id="my-tooltip" />
         </div>

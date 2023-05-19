@@ -20,6 +20,7 @@ function App() {
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/ranking" element={<RankPage />} />
+          <Route path="/url/:id" element={<UserLinksPage />} />
           <Route path="/r/:shortUrl" element={<Redirect />} />
         </Routes>
       </BrowserRouter>

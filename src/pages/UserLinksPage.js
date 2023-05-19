@@ -154,9 +154,7 @@ const LinkList = styled.ul`
   display: flex;
   flex-direction: column;
 
-  > :last-child {
     margin-bottom: 40px;
-  }
 
   li {
     border: 1px solid rgba(120, 177, 89, 0.25);
@@ -191,11 +189,13 @@ const LinkList = styled.ul`
     > div:nth-child(2) {
       display: flex;
       justify-content: center;
+      align-items: center;
     }
 
     > div:first-child {
       width: 30%;
       max-width: 30%;
+      display: flex;
       p {
         overflow: hidden;
         text-overflow: ellipsis;
