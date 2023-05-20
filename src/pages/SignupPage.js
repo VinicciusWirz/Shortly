@@ -47,6 +47,7 @@ export default function SignupPage() {
             value={form.name}
             type="text"
             disabled={loading}
+            required
           />
           <input
             placeholder="E-mail"
@@ -54,6 +55,7 @@ export default function SignupPage() {
             value={form.email}
             type="email"
             disabled={loading}
+            required
           />
           <input
             placeholder="Senha"
@@ -61,6 +63,7 @@ export default function SignupPage() {
             value={form.password}
             type="password"
             disabled={loading}
+            required
           />
           <input
             placeholder="Confirmar senha"
@@ -70,6 +73,7 @@ export default function SignupPage() {
             value={form.confirmPassword}
             type="password"
             disabled={loading}
+            required
           />
         </InputWrapper>
         <button type="submit" disabled={loading}>

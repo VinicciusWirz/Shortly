@@ -46,6 +46,7 @@ export default function SigninPage() {
             type="email"
             disabled={loading}
             autoComplete="email"
+            required
           />
           <input
             placeholder="Senha"
@@ -54,6 +55,7 @@ export default function SigninPage() {
             type="password"
             disabled={loading}
             autoComplete="password"
+            required
           />
         </InputWrapper>
         <button type="submit" disabled={loading}>

@@ -7,11 +7,11 @@ import { SessionProvider } from "./contexts/SessionContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <>
     <ResetStyle />
     <GlobalStyle />
     <SessionProvider>
       <App />
     </SessionProvider>
-  </React.StrictMode>
+  </>
 );

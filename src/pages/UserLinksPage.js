@@ -80,6 +80,7 @@ export default function UserLinksPage() {
             placeholder="Links que cabem no bolso"
             onChange={(e) => setForm({ url: e.target.value })}
             value={form.url}
+            required
           />
           <button type="submit" disabled={loading}>
             <p>Encurtar link</p>
