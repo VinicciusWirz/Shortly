@@ -54,6 +54,7 @@ export default function UserLinksPage() {
       ]);
       setForm({ url: "" });
       setLoading(false);
+      toast("Link criado");
     } catch (error) {
       alert(`${error.response.status}: ${error.response.data}`);
       setLoading(false);

@@ -42,7 +42,11 @@ export default function RankPage() {
             </ListLoading>
           )}
           {ranking.map((user, index) => (
-            <RankItem order={index} key={index}>
+            <RankItem
+              order={index}
+              key={index}
+              onClick={() => navigate(`/users/urls/${user.id}`)}
+            >
               {index + 1}. {user.name} - {user.linksCount} links -{" "}
               {user.visitCount} visualizações
             </RankItem>

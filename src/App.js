@@ -5,10 +5,11 @@ import RankPage from "./pages/RankPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import UserLinksPage from "./pages/UserLinksPage";
-import SessionContext, { SessionProvider } from "./contexts/SessionContext";
-import { useContext, useEffect } from "react";
+import SessionContext from "./contexts/SessionContext";
+import { useContext } from "react";
 import RedirectPage from "./pages/RedirectPage";
 import LinkPage from "./pages/LinkPage";
+import RankerListPage from "./pages/RankerListPage";
 
 function App() {
   const { token } = useContext(SessionContext);
@@ -21,6 +22,7 @@ function App() {
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/ranking" element={<RankPage />} />
+          <Route path="/users/urls/:id" element={<RankerListPage />} />
           <Route path="/url/:id" element={<LinkPage />} />
           <Route path="/r/:shortUrl" element={<RedirectPage />} />
         </Routes>

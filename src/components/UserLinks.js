@@ -1,9 +1,8 @@
 import { FaTrashAlt } from "react-icons/fa";
-import { BsClipboard2Fill } from "react-icons/bs";
 import { Tooltip } from "react-tooltip";
 import { styled } from "styled-components";
 import apiUrls from "../services/apiUrls";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SessionContext from "../contexts/SessionContext";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +11,7 @@ export default function UserLinks(props) {
   const { token } = useContext(SessionContext);
   const redirectLink = `${window.location.href}r/${shortUrl}`;
   const navigate = useNavigate();
+  const [copyTip, setCopyTip] = useState("Copiar link");
 
   async function deleteLink(id) {
     props.setLoading(true);
@@ -25,12 +25,21 @@ export default function UserLinks(props) {
       props.setLoading(false);
     }
   }
+
+  function copy() {
+    props.copyToClipboard(redirectLink);
+    setCopyTip("Link copiado!");
+    setTimeout(() => {
+      setCopyTip("Copiar link");
+    }, 2000);
+  }
+
   return (
     <>
       <li key={shortUrl}>
         <div
           data-tooltip-id="my-tooltip"
-          data-tooltip-content={url}
+          data-tooltip-content="Ver detalhes do link"
           onClick={() => navigate(`/url/${id}`)}
         >
           <p>{url}</p>
@@ -38,16 +47,15 @@ export default function UserLinks(props) {
         </div>
         <div
           data-tooltip-id="my-tooltip"
-          data-tooltip-content={redirectLink}
-          onClick={() => props.copyToClipboard(redirectLink)}
+          data-tooltip-content={copyTip}
+          onClick={copy}
         >
-          <BsClipboard2Fill style={{ fontSize: "20px", marginRight: "5px" }} />
           <p>{shortUrl}</p>
           <Tooltip id="my-tooltip" />
         </div>
         <div>
           <p>Quantidade de visitantes</p>
-          <span>{":"}</span>
+          <span>:</span>
           {visitCount}
         </div>
         <DeleteButton onClick={() => deleteLink(id)} disabled={props.loading}>

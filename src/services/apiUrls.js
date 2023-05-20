@@ -21,5 +21,15 @@ function getLinkInfo(id) {
   return axios.get(`${url}/${id}`);
 }
 
-const apiUrls = { createShort, deleteShort, redirectShort, getLinkInfo };
+function getRankUrlsList(id) {
+  return axios.get(`${url}/users/${id}`);
+}
+
+const apiUrls = {
+  createShort,
+  deleteShort,
+  redirectShort,
+  getLinkInfo,
+  getRankUrlsList,
+};
 export default apiUrls;
