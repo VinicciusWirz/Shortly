@@ -25,7 +25,6 @@ export default function UserLinks(props) {
       props.setLoading(false);
     }
   }
-
   return (
     <>
       <li key={shortUrl}>
@@ -46,7 +45,11 @@ export default function UserLinks(props) {
           <p>{shortUrl}</p>
           <Tooltip id="my-tooltip" />
         </div>
-        <div>Quantidade de visitantes: {visitCount}</div>
+        <div>
+          <p>Quantidade de visitantes</p>
+          <span>{":"}</span>
+          {visitCount}
+        </div>
         <DeleteButton onClick={() => deleteLink(id)} disabled={props.loading}>
           <FaTrashAlt size={22} />
         </DeleteButton>

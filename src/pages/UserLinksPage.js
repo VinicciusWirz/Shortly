@@ -7,6 +7,8 @@ import apiUrls from "../services/apiUrls";
 import UserLinks from "../components/UserLinks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useMediaQuery } from "react-responsive";
+import { AiOutlineCheck } from "react-icons/ai";
 
 export default function UserLinksPage() {
   const { token, setToken } = useContext(SessionContext);
@@ -14,6 +16,7 @@ export default function UserLinksPage() {
   const [loading, setLoading] = useState(true);
   const [shorts, setShorts] = useState([]);
   const [form, setForm] = useState({ url: "" });
+  const limitScreen = useMediaQuery({ maxWidth: 940 });
 
   useEffect(() => {
     if (!token) {
@@ -56,10 +59,12 @@ export default function UserLinksPage() {
       setLoading(false);
     }
   }
+
   function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
     toast("Link copiado");
   }
+
   return (
     <UserLinksStyle>
       <ToastContainer
@@ -80,10 +85,11 @@ export default function UserLinksPage() {
             placeholder="Links que cabem no bolso"
             onChange={(e) => setForm({ url: e.target.value })}
             value={form.url}
+            disabled={loading}
             required
           />
           <button type="submit" disabled={loading}>
-            <p>Encurtar link</p>
+            {limitScreen ? <AiOutlineCheck size={20} /> : "Encurtar link"}
           </button>
         </form>
         <LinkList>
@@ -131,6 +137,9 @@ const UserLinksStyle = styled.div`
       &:focus {
         outline-color: rgba(0, 155, 0, 0.1);
       }
+      &:disabled {
+        background: #dddd;
+      }
     }
     button {
       cursor: pointer;
@@ -141,11 +150,20 @@ const UserLinksStyle = styled.div`
       color: #ffffff;
       background: #5d9040;
       border-radius: 12px;
-      padding: 21px 44px;
+      padding: 19px 21px;
+      margin: 0;
       border: none;
-      p {
-        width: 94px;
+      display: inline-block;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      @media (min-width: 940px) {
+        white-space: nowrap;
+        padding: 21px 44px;
       }
+    }
+    :disabled {
+      background: #617a55;
     }
   }
 `;
@@ -178,9 +196,14 @@ const LinkList = styled.ul`
 
     > div {
       padding: 21px;
-      width: 22%;
-      max-width: 22%;
+      width: 26%;
+      max-width: 26%;
       cursor: default;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     > div:first-child,
@@ -193,16 +216,22 @@ const LinkList = styled.ul`
       justify-content: center;
       align-items: center;
     }
+    > div:nth-child(3) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      p {
+        max-width: 90%;
+      }
+      span {
+        margin-right: 5px;
+      }
+    }
 
     > div:first-child {
       width: 30%;
       max-width: 30%;
       display: flex;
-      p {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
     }
   }
 `;
