@@ -22,7 +22,7 @@ function getLinkInfo(id) {
 }
 
 function getRankUrlsList(id) {
-  return axios.get(`${url}/users/${id}`);
+  return axios.get(`${url}/user/${id}`);
 }
 
 const apiUrls = {

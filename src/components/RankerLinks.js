@@ -1,12 +1,11 @@
 import { Tooltip } from "react-tooltip";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function RankerLinks(props) {
   const { shortUrl, url, id, visitCount } = props.item;
   const [copyTip, setCopyTip] = useState("Copiar link");
-  const redirectLink = `${window.location.href}r/${shortUrl}`;
-  const navigate = useNavigate();
+  const redirectLink = `${window.location.protocol}//${window.location.host}/r/${shortUrl}`;
+
   function copy() {
     props.copyToClipboard(redirectLink);
     setCopyTip("Link copiado!");
@@ -21,7 +20,7 @@ export default function RankerLinks(props) {
         <div
           data-tooltip-id="my-tooltip"
           data-tooltip-content="Visitar link"
-          onClick={() => navigate(`/url/${id}`)}
+          onClick={() => window.open(redirectLink, "_blank")}
         >
           <p>{url}</p>
           <Tooltip id="my-tooltip" />

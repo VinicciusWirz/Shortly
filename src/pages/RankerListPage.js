@@ -5,11 +5,12 @@ import apiUrls from "../services/apiUrls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RankerLinks from "../components/RankerLinks";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function RankerListPage() {
   const [loading, setLoading] = useState(true);
   const [shorts, setShorts] = useState([]);
-  const [name, setName] = useState("User");
+  const [info, setInfo] = useState();
   const params = useParams();
 
   useEffect(() => {
@@ -19,9 +20,10 @@ export default function RankerListPage() {
   async function fetchList() {
     setLoading(true);
     try {
-      const info = await apiUrls.getRankUrlsList(params.id);
-      setName(info.data.name);
-      setShorts(info.data.shortenedUrls);
+      const { data } = await apiUrls.getRankUrlsList(params.id);
+      console.log(data);
+      setInfo({ name: data.name, visitCount: data.visitCount });
+      setShorts(data.shortenedUrls);
       setLoading(false);
     } catch (error) {
       alert(`${error.response.status}: ${error.response.data}`);
@@ -36,6 +38,11 @@ export default function RankerListPage() {
 
   return (
     <LinksRenderStyle>
+      {loading && (
+        <LoadingPage>
+          <ThreeDots />
+        </LoadingPage>
+      )}
       <ToastContainer
         position="top-left"
         autoClose={1500}
@@ -49,7 +56,8 @@ export default function RankerListPage() {
         theme="light"
       />
       <Container>
-        <Title>Links de {name}</Title>
+        <Title>Links de {info ? info.name : "User"}</Title>
+        <SubTitle>Total de visitas: {info ? info.visitCount : "0"} </SubTitle>
         <LinkList>
           {shorts.map((l) => (
             <RankerLinks
@@ -70,6 +78,17 @@ export default function RankerListPage() {
 const Container = styled.div`
   width: 80%;
 `;
+const LoadingPage = styled.div`
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const LinksRenderStyle = styled.div`
   width: 100%;
@@ -79,6 +98,11 @@ const LinksRenderStyle = styled.div`
 
 const Title = styled.div`
   font-size: 22px;
+`;
+
+const SubTitle = styled.div`
+  margin-top: 8px;
+  font-size: 16px;
 `;
 
 const LinkList = styled.ul`

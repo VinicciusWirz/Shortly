@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export default function UserLinks(props) {
   const { shortUrl, url, id, visitCount } = props.item;
   const { token } = useContext(SessionContext);
-  const redirectLink = `${window.location.href}r/${shortUrl}`;
+  const redirectLink = `${window.location.host}/r/${shortUrl}`
   const navigate = useNavigate();
   const [copyTip, setCopyTip] = useState("Copiar link");
 
