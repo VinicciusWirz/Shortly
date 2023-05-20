@@ -21,7 +21,6 @@ export default function RankerListPage() {
     setLoading(true);
     try {
       const { data } = await apiUrls.getRankUrlsList(params.id);
-      console.log(data);
       setInfo({ name: data.name, visitCount: data.visitCount });
       setShorts(data.shortenedUrls);
       setLoading(false);

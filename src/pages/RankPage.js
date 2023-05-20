@@ -101,6 +101,7 @@ const RankItem = styled.li`
   flex: none;
   order: ${(props) => props.order};
   flex-grow: 0;
+  cursor: pointer;
 `;
 const Signup = styled.div`
   margin-top: 82px;
