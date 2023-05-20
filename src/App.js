@@ -7,7 +7,7 @@ import SignupPage from "./pages/SignupPage";
 import UserLinksPage from "./pages/UserLinksPage";
 import SessionContext, { SessionProvider } from "./contexts/SessionContext";
 import { useContext, useEffect } from "react";
-import Redirect from "./pages/Redirect";
+import RedirectPage from "./pages/RedirectPage";
 import LinkPage from "./pages/LinkPage";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/ranking" element={<RankPage />} />
           <Route path="/url/:id" element={<LinkPage />} />
-          <Route path="/r/:shortUrl" element={<Redirect />} />
+          <Route path="/r/:shortUrl" element={<RedirectPage />} />
         </Routes>
       </BrowserRouter>
     </PageContainer>

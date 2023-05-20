@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import apiUrls from "../services/apiUrls";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Redirect() {
+export default function RedirectPage() {
   const params = useParams();
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
