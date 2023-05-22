@@ -5,6 +5,7 @@ import SessionContext from "../contexts/SessionContext";
 import apiUsers from "../services/apiUsers";
 import { useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
+import formatNumRndr from "../utils/formatNumRndr";
 
 export default function RankPage() {
   const { token } = useContext(SessionContext);
@@ -48,7 +49,7 @@ export default function RankPage() {
               onClick={() => navigate(`/users/urls/${user.id}`)}
             >
               {index + 1}. {user.name} - {user.linksCount} links -{" "}
-              {user.visitCount} visualizações
+              {formatNumRndr(user.visitCount)} visualizações
             </RankItem>
           ))}
         </Frame>

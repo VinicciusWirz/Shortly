@@ -1,10 +1,12 @@
 import { Tooltip } from "react-tooltip";
 import { useState } from "react";
+import formatNumRndr from "../utils/formatNumRndr";
 
 export default function RankerLinks(props) {
-  const { shortUrl, url, id, visitCount } = props.item;
+  const { shortUrl, url, visitCount } = props.item;
   const [copyTip, setCopyTip] = useState("Copiar link");
   const redirectLink = `${window.location.protocol}//${window.location.host}/r/${shortUrl}`;
+  const countFormat = formatNumRndr(Number(visitCount));
 
   function copy() {
     props.copyToClipboard(redirectLink);
@@ -36,7 +38,7 @@ export default function RankerLinks(props) {
         <div>
           <p>Quantidade de visitantes</p>
           <span>:</span>
-          {visitCount}
+          {countFormat}
         </div>
       </li>
     </>

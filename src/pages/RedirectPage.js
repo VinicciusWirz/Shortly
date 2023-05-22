@@ -1,33 +1,16 @@
 import { useEffect } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { styled } from "styled-components";
-import apiUrls from "../services/apiUrls";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function RedirectPage() {
   const params = useParams();
-  const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
-  const minTime = 1000;
-  const maxTime = 2500;
-  const rng = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+  const waitingTime = 2500;
   useEffect(() => {
     setTimeout(() => {
       window.location.href = `${url}/urls/open/${params.shortUrl}`;
-    }, rng);
-    // apiUrls
-    //   .redirectShort(params.shortUrl)
-    //   .then((res) => {
-    //     const redirectUrl = res.request.response.replace(
-    //       "OK. Redirecting to ",
-    //       ""
-    //     );
-    //     window.location.href = redirectUrl;
-    //   })
-    //   .catch((error) => {
-    //     alert("Ocorreu um erro");
-    //     console.log(error);
-    // });
+    }, waitingTime);
   }, []);
   return (
     <Container>

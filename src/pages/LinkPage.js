@@ -67,7 +67,7 @@ export default function LinkPage() {
       />
       <Container>
         <Frame>
-          <Title>As informações do link</Title>
+          <Title>Informações do link</Title>
           <ul>
             <li>
               <p>link original:</p>

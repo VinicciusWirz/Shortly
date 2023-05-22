@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMediaQuery } from "react-responsive";
 import { AiOutlineCheck } from "react-icons/ai";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function UserLinksPage() {
   const { token, setToken } = useContext(SessionContext);
@@ -45,12 +46,21 @@ export default function UserLinksPage() {
 
   async function handleForm(e) {
     e.preventDefault();
+    if (!form.url.includes("http")) {
+      alert("O link precisa seguir protocolo http ou https");
+      return;
+    }
     setLoading(true);
     try {
       const { data } = await apiUrls.createShort(form, token.token);
       setShorts([
         ...shorts,
-        { url: form.url, shortUrl: data.shortUrl, id: data.id, visitCount: 0 },
+        {
+          url: form.url,
+          shortUrl: data.shortUrl,
+          id: data.id,
+          visitCount: "00",
+        },
       ]);
       setForm({ url: "" });
       setLoading(false);
@@ -106,6 +116,11 @@ export default function UserLinksPage() {
             />
           ))}
         </LinkList>
+        {loading && (
+          <LoadingIcon>
+            <ThreeDots />
+          </LoadingIcon>
+        )}
       </Container>
     </UserLinksStyle>
   );
@@ -235,4 +250,9 @@ const LinkList = styled.ul`
       display: flex;
     }
   }
+`;
+const LoadingIcon = styled.section`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;

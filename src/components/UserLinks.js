@@ -5,13 +5,15 @@ import apiUrls from "../services/apiUrls";
 import { useContext, useState } from "react";
 import SessionContext from "../contexts/SessionContext";
 import { useNavigate } from "react-router-dom";
+import formatNumRndr from "../utils/formatNumRndr";
 
 export default function UserLinks(props) {
   const { shortUrl, url, id, visitCount } = props.item;
   const { token } = useContext(SessionContext);
-  const redirectLink = `${window.location.host}/r/${shortUrl}`
+  const redirectLink = `${window.location.protocol}//${window.location.host}/r/${shortUrl}`;
   const navigate = useNavigate();
   const [copyTip, setCopyTip] = useState("Copiar link");
+  const countFormat = formatNumRndr(Number(visitCount));
 
   async function deleteLink(id) {
     props.setLoading(true);
@@ -56,7 +58,7 @@ export default function UserLinks(props) {
         <div>
           <p>Quantidade de visitantes</p>
           <span>:</span>
-          {visitCount}
+          {countFormat}
         </div>
         <DeleteButton onClick={() => deleteLink(id)} disabled={props.loading}>
           <FaTrashAlt size={22} />

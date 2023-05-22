@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RankerLinks from "../components/RankerLinks";
 import { ThreeDots } from "react-loader-spinner";
+import formatNumRndr from "../utils/formatNumRndr";
 
 export default function RankerListPage() {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,8 @@ export default function RankerListPage() {
     setLoading(true);
     try {
       const { data } = await apiUrls.getRankUrlsList(params.id);
-      setInfo({ name: data.name, visitCount: data.visitCount });
+      const countFormat = formatNumRndr(Number(data.visitCount));
+      setInfo({ name: data.name, visitCount: countFormat });
       setShorts(data.shortenedUrls);
       setLoading(false);
     } catch (error) {
@@ -56,7 +58,7 @@ export default function RankerListPage() {
       />
       <Container>
         <Title>Links de {info ? info.name : "User"}</Title>
-        <SubTitle>Total de visitas: {info ? info.visitCount : "0"} </SubTitle>
+        <SubTitle>Total de visitas: {info ? info.visitCount : "00"} </SubTitle>
         <LinkList>
           {shorts.map((l) => (
             <RankerLinks
